@@ -13,26 +13,26 @@ length of the longest substring with all distinct characters.
 Time Complexity - O(n)
 */
 
-function findLongestSubstring(s){
+function findLongestSubstring(str) {
+    let longest = 0;
+    let seen = {};
     let left = 0;
-    let maxLength = 0;
-    let charMap = new Map();  // To store the last index of each character
+   
+    for (let right = 0; right < str.length; right++) {
+      let char = str[right];
+      // If character is already in the map, move the left pointer to the last occurrence
+      if (seen[char]) {
+        left = Math.max(left, seen[char]);
+      }
+      
+      // Calculate the maximum length of substring found so far
+      longest = Math.max(longest, right - left + 1);
 
-    for (let right = 0; right < s.length; right++) {
-        // If character is already in the map, move the left pointer to the right of the last occurrence
-        if (charMap.has(s[right])) {
-            left = Math.max(left, charMap.get(s[right]) + 1);
-        }
-
-        // Update the map with the current character's index
-        charMap.set(s[right], right);
-
-        // Calculate the maximum length of substring found so far
-        maxLength = Math.max(maxLength, right - left + 1);
+      // Update the map with the current character's position
+      seen[char] = right + 1;
     }
-
-    return maxLength;
-}
+    return longest;
+  }
 
 console.log(findLongestSubstring('rithmschool'));
 console.log(findLongestSubstring(''));
